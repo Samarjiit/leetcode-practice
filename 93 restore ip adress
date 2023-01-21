@@ -50,4 +50,4 @@ string generate(string&s,int n, int i,int j,int k){
 
 
 //TC : O(N3)
-//SC O(1)
+//SC O(n)
