@@ -1,0 +1,44 @@
+Given an array A of N integers, You have to move from index 1 to N by doing jumps. A jump from index i to index j is said to be valid if following conditions are satisfied.
+1. A[i] & NUM == 0
+2. A[j] & NUM == 0
+3. A[k] & NUM != 0 (i<k<j)
+NUM is defined as a number which is a power of 2 and remains fixed while jumping throughout the array. Return the value of NUM so that you can reach the other end with minimum jumps.
+If  more than one value of NUM makes us reach with minimum jumps, Return the lowest NUM value.
+
+Example 1:
+
+Input:
+N = 5
+A = {3, 4, 2, 4, 9}
+
+Output:
+4
+
+Explanation:
+If NUM=4, our jumps will be from index 1->3->5 
+these jumps satisfies the above three conditions, 
+and this gives minimum number of jumps=2
+
+
+class Solution{
+	public:
+	int jumpOverArray(int n,int a[])
+	{
+		int ans = 0,mn = n+5;
+		for(int j = 0; j<=10; j++)
+		{
+		    if((a[0]&(1<<j)) || (a[n-1]&(1<<j)))continue;
+		    int cur = n-1;
+		    for(int i = 1; i+1<n; i++)
+		    {
+		        if((1<<j)&a[i])cur--;
+		    }
+		    if(cur<mn)
+		    {
+		        mn = cur;
+		        ans = (1<<j);  //means 2powerj
+		    }
+		}
+		return ans;
+	}
+};
