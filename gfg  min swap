@@ -1,0 +1,38 @@
+	You are given a string S of size N. In one operation you can replace any character of the string with any other character. Find the minimum number of operations required so that no two vowels or consonants are adjacent.
+
+Example 1:
+
+Input: 
+N = 4,
+S = wlrb
+Output:
+2
+Explanation:
+We can replace w and r with a.
+  
+  int solve(int n,string s)
+	{
+        unordered_map<char,int>m;
+        m['a']=m['e']=m['i']=m['o']=m['u']=1;
+        
+        for(char &c : s){
+            c='0'+m[c];
+        }
+        
+        int cnt1=0;
+        int cnt2=0;
+        
+        for(int i=0;i<n;i++){
+            int x=s[i]-'0'; //converting string num to int num
+            
+            if(x!=(i%2))
+                cnt1++; //start with index 0
+                
+            if(x==(i%2))
+                cnt2++ ;//start with index1
+                
+              
+        }
+        
+        return min(cnt1,cnt2);  
+	}
