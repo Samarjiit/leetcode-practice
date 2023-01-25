@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& nums, int k) {
+        int sum=0,ans=0;
+        unordered_map<int,int>mp; //to store the remainder and its frequency
+        mp[0]=1; //initially remainder 0 will count as 1 b/c it will div by 5
+        for(int i=0;i<nums.size();i++){
+            sum=((sum+nums[i])%k+k)%k;  //also it will applicable for -ve remainder
+            mp[sum]++; //increement the freqquency of raminder
+            if(mp[sum]>1){
+                ans+=mp[sum]-1; 
+            }
+        }
+
+        return ans;
+        
+    }
+};
+
+
+//t.c o(n)
+//s.c o(n)
+
+approach:
+prefix sum 
+than find the remainder of prefix sum
+if the remainder repeated then subtract both the raeminader  and it will divisuble by 5 so that sum of sub array will be div by 5 
+
+https://www.youtube.com/watch?v=Z3ZfAt6B1rA
