@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int closestMeetingNode(vector<int>& edges, int node1, int node2) {
+
+       //creating 2 distance vector to store the distance from node 1 to all the nodes
+       vector<int>dist_node1(edges.size(),-1);//no of nodes with initialize with -1 
+       vector<int>dist_node2(edges.size(),-1);
+
+       //to check whether the node is visited or not
+       vector<bool>visited(edges.size(),false); //initially all the nodes are not visited
+       dfs(node1,dist_node1,visited,edges,0); // 0 here is the current distance of the node 
+       visited.assign(edges.size(),false); // again assign the visited nodes as false for dist_node2 this visited will check for 2nd node
+       dfs(node2,dist_node2,visited,edges,0);
+
+
+       //compare nodes and their distances from both node1 and node2
+        int ans=edges.size();
+        int result=-1;
+       for(int i=0;i<edges.size();i++){
+           if(dist_node1[i]!=-1 && dist_node2[i]!=-1){  //check if distance reached from both the node //check if node is reachable or not
+               if(max(dist_node1[i],dist_node2[i])<ans){
+                   ans=max(dist_node1[i],dist_node2[i]);
+                   result=i;
+               }
+           }
+       }
+ return result;
+    }
+
+    void dfs(int node,vector<int>&dist_node1,vector<bool>&visited,vector<int>&edges,int distance){
+        if(node!=-1 && !visited[node]){  //node!=-1 means that there is no further nodes from that node. 
+            visited[node]=true; //after visiting then call its neighbour
+            dist_node1[node]=distance; //intiially the distance is 0 from itself
+            //dfs for its neighbour
+            dfs(edges[node],dist_node1,visited,edges,distance+1);  // for eg if cuurent distance for o is o so now its neighbour is 1 so distance will be 1 and then for 2nd neighbour distance is 2 from 0 only distance parameter will change 
+
+        }
+    }
+};
