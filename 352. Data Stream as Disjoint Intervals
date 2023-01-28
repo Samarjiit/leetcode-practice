@@ -1,0 +1,120 @@
+Given a data stream input of non-negative integers a1, a2, ..., an, summarize the numbers seen so far as a list of disjoint intervals.
+
+Implement the SummaryRanges class:
+
+SummaryRanges() Initializes the object with an empty stream.
+void addNum(int value) Adds the integer value to the stream.
+int[][] getIntervals() Returns a summary of the integers in the stream currently as a list of disjoint intervals [starti, endi]. The answer should be sorted by starti.
+
+
+
+class SummaryRanges {
+public:
+        unordered_set<int>st;  //use set to store unique values
+
+    SummaryRanges() {
+                unordered_set<int>st;
+
+        }
+    
+    
+    void addNum(int value) {
+        st.insert(value); //inserting values into set
+    }
+    
+    vector<vector<int>> getIntervals() {
+        vector<int>ans(st.begin(),st.end()); //here array used to store the value in ascending order so that it is easy for merge and get an interval of consecutive values
+        sort(ans.begin(),ans.end());
+        int n=ans.size();
+        
+        vector<vector<int>>result;  //storing diff intervals 
+        for(int i=0;i<n;i++){
+            int left=ans[i]; //intially left interval startfrom min no
+            while(i<n-1 && ans[i]+1==ans[i+1]){ //check the interval condition
+                i++;
+            }
+            result.push_back({left,ans[i]});
+        }
+            return result;
+
+    }
+};
+
+
+//t.c 0(n(logn))
+
+
+//Approach-2 : O(nlogn) - Using Set(which takes log(n) to insert elements)
+class SummaryRanges {
+public:
+    set<int> st;
+    SummaryRanges() {
+        st.clear();
+    }
+    
+    void addNum(int value) {
+        st.insert(value);
+    }
+    
+    vector<vector<int>> getIntervals() {
+        vector<int> nums(begin(st), end(st));
+        
+        vector<vector<int>> result;
+        
+        int n = nums.size();
+        
+        for(int i = 0; i<n; i++) {
+            int start = nums[i];
+            
+            while(i < n-1 && nums[i]+1 == nums[i+1]) {
+                i++;
+            }
+            result.push_back({start, nums[i]});
+        }
+        
+        return result;
+    }
+};
+
+
+//Approach-3 - (Using ordered map) - O(logn)
+class SummaryRanges {
+    map<int, int> intervals;
+
+public:
+    SummaryRanges() {}
+
+    void addNum(int value) {
+        int left  = value;
+        int right = value;
+        auto just_greater = intervals.upper_bound(value);
+        
+        if (just_greater != intervals.begin()) {
+            
+            auto ek_peeche = just_greater;
+            --ek_peeche;
+            
+            if (ek_peeche->second >= value) {
+                return;
+            }
+            if (ek_peeche->second == value - 1) {
+                left = ek_peeche->first;
+            }
+        }
+        if (just_greater != intervals.end() && just_greater->first == value + 1) {
+            right = just_greater->second;
+            intervals.erase(just_greater);
+        }
+        intervals[left] = right;
+    }
+
+    vector<vector<int>> getIntervals() {
+        vector<vector<int>> result;
+        
+        for (const auto& p : intervals) {
+            result.push_back({p.first, p.second});
+        }
+        
+        return result;
+    }
+};
