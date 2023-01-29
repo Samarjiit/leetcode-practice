@@ -1,0 +1,92 @@
+//BRUTEFORCE BUT ONLY 2 TESTCASES PASSED
+
+class LRUCache {
+public:
+    vector<pair<int,int>>cache;
+    int n;
+    LFUCache(int capacity) {
+        n=capacity;
+    }
+    
+    int get(int key) {
+        for(int i=0;i<cache.size();i++){
+            if(cache[i].first==key){
+                int val=cache[i].second;
+                pair<int,int>temp=cache[i];
+                cache.erase(cache.begin()+i);
+                cache.push_back(temp);
+                return val;
+            }
+        }
+        return -1; //no key found
+    }
+    
+    void put(int key, int value) {
+        for(int i=0;i<cache.size();i++){
+            if(cache[i].first==key){
+                cache.erase(cache.begin()+i);
+                cache.push_back({key,value});
+                return;
+            }
+        }
+
+        if(cache.size()==n){
+            cache.erase(cache.begin());
+            cache.push_back({key,value});
+        }
+        else{
+            cache.push_back({key,value});
+        }
+    }
+};
+
+//optimised approach
+class LRUCache {
+public:
+
+    list<int>dll; //here we are using doubly ll b/c pervious node has to store the address of previous as well as the next node for back and front traversal,deletion 
+    map<int,pair<list<int>::iterator,int>>mp; //here pair.first =store the address of the key 
+    int n;
+  
+    LFUCache(int capacity) {
+        n=capacity;
+    }
+      void makeMostRecentlyUsed(int key){
+            dll.erase(mp[key].first); //first delete the key from dll
+            dll.push_front(key); //push the same key at front of dll
+            mp[key].first=dll.begin(); //dll.begin() is the address of the key so here it will update the address in the map
+        }
+    int get(int key) {
+        //if key is not int map
+        if(mp.find(key)==mp.end()){
+            return -1;}
+        //if key present in the map then put in the front of dll
+            makeMostRecentlyUsed(key);
+            return mp[key].second; //print the value of key which is placed in the second part of the pair
+    
+    }
+
+      
+
+       
+    
+    void put(int key, int value) {
+        if(mp.find(key)!=mp.end()){
+            mp[key].second=value;
+            makeMostRecentlyUsed(key);
+
+        }else{
+            dll.push_front(key);
+            mp[key]={dll.begin(),value};
+            n--;
+
+        }
+
+        if(n<0){
+            int key_to_be_del=dll.back(); // key which is going to be deleted
+            mp.erase(key_to_be_del);
+            dll.pop_back();//delete from dll b/c old key were at back side 
+            n++;
+        }
+    }
+};
