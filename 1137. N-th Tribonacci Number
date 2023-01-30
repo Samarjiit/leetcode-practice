@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int tribonacci(int n) {
+        int x=0,y=1,z=1,a=0;
+        if(n==0)return x;
+        if(n==1 || n==2) return 1;
+
+        for(int i=3;i<=n;i++){
+            a=x+y+z;
+            x=y;
+            y=z;
+            z=a;
+        }
+        return z;
+    }
+};
+
+
+//t.c o(n)
+//s.c o(1)
+
+
+  int tribonacci(int n) {
+        int tri[3]{0,1,1};
+        for ( int i = 3; i <= n; ++i ) {
+            tri[i%3] = tri[0] + tri[1] + tri[2];
+        }
+        return tri[n%3];
+    }
