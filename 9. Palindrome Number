@@ -1,0 +1,17 @@
+class Solution {
+public:
+    bool isPalindrome(int x) {
+    int num=x;
+    if(num < 0) return  false; 
+   int reversed = 0, remainder, original = num;
+   while(num != 0) {
+        remainder = num % 10; 
+        if((reversed>INT_MAX/10)||(reversed<INT_MIN/10)){
+              return 0;
+          }
+        reversed = reversed * 10 + remainder; 
+        num  /= 10;  
+    }
+    return original == reversed;
+    }
+};
