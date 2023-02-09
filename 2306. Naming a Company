@@ -1,0 +1,25 @@
+class Solution {
+public:
+    long long distinctNames(vector<string>& ideas) {
+        unordered_set<string>initialgroup[26]; //crating 26 space set from a to z
+        for(auto& idea:ideas){
+            initialgroup[idea[0]-'a'].insert(idea.substr(1)); }//storing all the words on their respective letter aka number o for a after removing the first letter
+            long long ans=0;
+            for(int i=0;i<25;i++){ //first loop goes till n-1
+                for(int j=i+1;j<26;j++){ //2nd list goes till n
+                    int numOfMutual=0;
+
+                    for(auto & ideaA:initialgroup[i]){
+                        if(initialgroup[j].count(ideaA)){
+                            numOfMutual++;
+                        }
+                    }
+
+                    ans+=2LL*(initialgroup[i].size()-numOfMutual)*(initialgroup[j].size()-numOfMutual);
+            }
+
+        }
+        return ans;
+    }
+    
+};
