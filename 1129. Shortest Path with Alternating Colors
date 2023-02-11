@@ -1,0 +1,44 @@
+class Solution {
+public:
+    vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& redEdges, vector<vector<int>>& blueEdges) {
+        //creating adj matrix to store the pairs
+        vector<vector<pair<int,int>>>adj(n);
+        for(auto &it :redEdges){
+            adj[it[0]].push_back({it[1],0});//0 for red color-storing nodes and its color
+        
+        }
+
+        for(auto &it:blueEdges){
+            adj[it[0]].push_back({it[1],1});//1 for blue
+        }
+        vector<int>ans(n,-1);
+        vector<vector<bool>>visited(n,vector<bool>(2));
+        queue<vector<int>>q;
+
+        q.push({0,0,-1});//initially color is default
+        visited[0][0]=true;
+        visited[0][1]=true;
+        ans[0]=0;
+
+        while(!q.empty()){
+
+            vector<int>curr=q.front();
+            q.pop();
+            int node =curr[0],steps=curr[1],prevColor=curr[2];
+
+            for(auto & [neighbour,color]:adj[node]){
+                if(!visited[neighbour][color]&&color!=prevColor){
+                    visited[neighbour][color]=true;
+                    q.push({neighbour,1+steps,color});
+                    if(ans[neighbour]==-1){
+                        ans[neighbour]=1+steps;
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+t.c 0(n+e)
+s.c o(n+e)
