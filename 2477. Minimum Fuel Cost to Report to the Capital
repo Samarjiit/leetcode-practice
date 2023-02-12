@@ -1,0 +1,30 @@
+class Solution {
+public:
+    long long totalFuels;
+    long long dfs(int node,int parent,vector<vector<int>>&adj,int seats){
+        int representative=1;
+        for(auto child:adj[node]){
+            if(child!=parent){
+                representative+=dfs(child,node,adj,seats);
+            }
+        }
+        if(node!=0){
+            totalFuels+=ceil((double)representative/seats);
+        }
+        return representative;
+    }
+
+
+    long long minimumFuelCost(vector<vector<int>>& roads, int seats) {
+        int n=roads.size()+1;
+        vector<vector<int>>adj(n);
+        for(auto r:roads){
+            adj[r[0]].push_back(r[1]);
+            adj[r[1]].push_back(r[0]);
+        }
+
+        totalFuels=0;
+        dfs(0,-1,adj,seats);
+        return totalFuels;
+    }
+};
