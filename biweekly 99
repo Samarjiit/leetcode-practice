@@ -1,0 +1,30 @@
+2578. Split With Minimum Sum
+
+
+class Solution {
+public:
+    int splitNum(int num) {
+        vector<int>v;
+        int temp=num;
+        while(temp!=0){
+            v.push_back(temp%10);
+            temp/=10;
+        }
+        sort(v.begin(),v.end());
+        
+        int num1=0;
+        int num2=0;
+        int i=0;
+        while(i<v.size()){
+            if(i%2==0){
+                num1=num1*10+v[i++];
+            }
+            else{
+                num2=num2*10+v[i++];
+            }
+            
+            
+        }
+        return num1 +num2;
+    }
+};
