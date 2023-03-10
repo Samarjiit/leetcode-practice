@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<int>values;
+    Solution(ListNode* head) {
+
+        ListNode* temp=head;
+        int i=0;
+        while(temp){
+            values.push_back(temp->val);
+            temp=temp->next;
+        }
+    }
+    
+    int getRandom() {
+        int n=values.size();
+        return values[rand()%n];
+    }
+};
+
+
+
+//using reservoir smapling 
+
+class Solution {
+public:
+    ListNode*head=NULL;//define global head node
+    Solution(ListNode* head) {
+        this->head=head; //this.head access the global head node
+    }
+    
+    int getRandom() {
+        int ans = 0, i = 1;
+        ListNode *p = this->head;
+        while (p) {
+            if (rand() % i == 0) 
+                ans = p->val;
+            i++;
+            p = p->next;
+        }
+        return ans;
+    }
+};
+
